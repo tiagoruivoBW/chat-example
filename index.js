@@ -11,8 +11,6 @@ app.get('/', function(req, res){
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
-// var client = pg.connect(process.env.DATABASE_URL);
-
 app.get('/account/:id', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) { 
     client.query('SELECT * FROM salesforce.Account WHERE SFID = $1', [request.params.id], function(err, result) {
@@ -31,6 +29,7 @@ io.on('connection', function(socket){
     
     pg.connect(process.env.DATABASE_URL, function(err, client, done) { 
       client.query('SELECT * FROM salesforce.Account WHERE SFID = $1', [msg[0]], function(err, result) {
+        done();
         if (err)
         { console.error(err); response.send("Error " + err); }
         else
