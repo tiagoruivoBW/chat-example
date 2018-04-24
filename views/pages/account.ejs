@@ -35,7 +35,7 @@
         <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
         <script>
           $(function () {
-            var sfdcId = '<%= results[0].SFID %>';
+            var sfdcId = '<%= results[0].Id %>';
             $('#messages').append($('<li>').text('<%= results[0].description %>'));
             window.scrollTo(0, document.body.scrollHeight);
 
