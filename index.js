@@ -28,6 +28,7 @@ io.on('connection', function(socket){
     io.emit('chat message', msg[1]);
     
     pg.connect(process.env.DATABASE_URL, function(err, client, done) { 
+      console.log(msg[0]);
       client.query('SELECT * FROM salesforce.Account WHERE SFID = $1', [msg[0]], function(err, result) {
         console.log(msg[1]);
         console.log(msg[0]);
