@@ -16,9 +16,9 @@ app.get('/account/:id', function (request, response) {
     client.query('SELECT * FROM salesforce.Account WHERE SFID = $1', [request.params.id], function(err, result) {
       done();
       if (err)
-       { console.error(err); response.send("Error " + err); }
+      { console.error(err); response.send("Error " + err); }
       else
-       { response.render('pages/account', {results: result.rows} ); }
+      { response.render('pages/account', {results: result.rows} ); }
     });
   });
 });
@@ -26,17 +26,20 @@ app.get('/account/:id', function (request, response) {
 io.on('connection', function(socket){
   socket.on('chat message', function(msg){
     io.emit('chat message', msg[1]);
-    client.query('SELECT * FROM salesforce.Account WHERE SFID = $1', [msg[0]], function(err, result) {
-      done();
-      if (err)
-       { console.error(err); response.send("Error " + err); }
-      else
-       { 
-        var allMessage = result.rows[0].description + msg[1];
-        client.query('UPDATE salesforce.Account SET Description = $1 WHERE SFID = $2', [allMessage, msg[0]], function(err, result) {
-          done();
-        });
+    
+    pg.connect(process.env.DATABASE_URL, function(err, client, done) { 
+      client.query('SELECT * FROM salesforce.Account WHERE SFID = $1', [msg[0]], function(err, result) {
+        done();
+        if (err)
+        { console.error(err); response.send("Error " + err); }
+        else
+        { 
+          var allMessage = result.rows[0].description + msg[1];
+          client.query('UPDATE salesforce.Account SET Description = $1 WHERE SFID = $2', [allMessage, msg[0]], function(err, result) {
+            done();
+          });
         }
+      });
     });
   });
 });
