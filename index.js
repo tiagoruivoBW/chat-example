@@ -11,10 +11,10 @@ app.get('/', function(req, res){
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
-var client = pg.connect(process.env.DATABASE_URL);
+// var client = pg.connect(process.env.DATABASE_URL);
 
 app.get('/account/:id', function (request, response) {
-  // pg.connect(process.env.DATABASE_URL, function(err, client, done) { 
+  pg.connect(process.env.DATABASE_URL, function(err, client, done) { 
     client.query('SELECT * FROM salesforce.Account WHERE SFID = $1', [request.params.id], function(err, result) {
       done();
       if (err)
@@ -22,16 +22,15 @@ app.get('/account/:id', function (request, response) {
       else
       { response.render('pages/account', {results: result.rows} ); }
     });
-  // });
+  });
 });
 
 io.on('connection', function(socket){
   socket.on('chat message', function(msg){
     io.emit('chat message', msg[1]);
     
-    // pg.connect(process.env.DATABASE_URL, function(err, client, done) { 
+    pg.connect(process.env.DATABASE_URL, function(err, client, done) { 
       client.query('SELECT * FROM salesforce.Account WHERE SFID = $1', [msg[0]], function(err, result) {
-        done();
         if (err)
         { console.error(err); response.send("Error " + err); }
         else
@@ -42,7 +41,7 @@ io.on('connection', function(socket){
           });
         }
       });
-    // });
+    });
   });
 });
 
