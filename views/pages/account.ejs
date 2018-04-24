@@ -35,13 +35,13 @@
         <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
         <script>
           $(function () {
-            var sfdcId = '<%= results[0].SFID %>';
+            // var sfdcId = '<%= results[0].SFID %>';
             $('#messages').append($('<li>').text('<%= results[0].description %>'));
             window.scrollTo(0, document.body.scrollHeight);
 
             var socket = io();
             $('form').submit(function(){
-              socket.emit('chat message', [sfdcId, $('#m').val()]);
+              socket.emit('chat message', $('#m').val());
               $('#m').val('');
               return false;
             });
