@@ -40,7 +40,7 @@
 
             var socket = io();
             $('form').submit(function(){
-              socket.emit('chat message', ['<%= result[0].SFID %>', $('#m').val()]);
+              socket.emit('chat message', ['<%= results[0].SFID %>', $('#m').val()]);
               $('#m').val('');
               return false;
             });
