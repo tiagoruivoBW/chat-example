@@ -33,7 +33,7 @@ io.on('connection', function(socket){
         console.log(msg[1]);
         console.log(msg[0]);
         console.log(result.rows[0].description);
-        // done();
+        done();
         if (err)
         { console.error(err); response.send("Error " + err); }
         else
