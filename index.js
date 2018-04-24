@@ -13,7 +13,7 @@ app.set('view engine', 'ejs');
 
 app.get('/account/:id', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) { 
-    client.query('SELECT * FROM salesforce.Account WHERE Id = "($1)"', [request.params.id], function(err, result) {
+    client.query('SELECT * FROM salesforce.Account WHERE Id = \'($1)\'', [request.params.id], function(err, result) {
       done();
       if (err)
        { console.error(err); response.send("Error " + err); }
